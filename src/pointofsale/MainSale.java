@@ -6,6 +6,7 @@
 package pointofsale;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -16,11 +17,18 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MainSale extends javax.swing.JFrame {
 
+    HashMap loginInfo = new HashMap();
+
     /**
      * Creates new form MainSale
      */
     public MainSale() {
+
+        loginInfo.put("01", "1234");
+        loginInfo.put("02", "4321");
         initComponents();
+        pnlPayment.hide();
+        pnlLogin.show();
     }
 
     /**
@@ -32,6 +40,7 @@ public class MainSale extends javax.swing.JFrame {
     DefaultTableModel cartModel;
     ArrayList<Product> productList = new ArrayList<Product>();
     ArrayList<Product> cartList = new ArrayList<Product>();
+    static boolean login = true;
 
     @SuppressWarnings("unchecked")
 
@@ -55,7 +64,14 @@ public class MainSale extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jPanel7 = new javax.swing.JPanel();
+        pnlLogin = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        txtLoginId = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        btnLogin = new javax.swing.JButton();
+        pfPassword = new javax.swing.JPasswordField();
+        jLabel8 = new javax.swing.JLabel();
+        pnlPayment = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         lblGrandTotal = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -72,20 +88,22 @@ public class MainSale extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         btnReturn = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        btnLogOut = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        mnExit = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        mnAddProduct = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        mnManageProduct = new javax.swing.JMenuItem();
+        mnManageCustomer = new javax.swing.JMenuItem();
+        mnReport = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 153));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Sale Product"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sale Product", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.ABOVE_TOP));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Product Name");
@@ -155,7 +173,7 @@ public class MainSale extends javax.swing.JFrame {
         );
 
         jPanel2.setBackground(new java.awt.Color(153, 153, 153));
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Cart Items"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cart Items", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.ABOVE_TOP));
 
         tblProductCart.setBackground(new java.awt.Color(204, 204, 204));
         tblProductCart.setModel(new javax.swing.table.DefaultTableModel(
@@ -225,8 +243,74 @@ public class MainSale extends javax.swing.JFrame {
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel7.setBackground(new java.awt.Color(153, 153, 153));
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Payment Process"));
+        pnlLogin.setBackground(new java.awt.Color(153, 153, 153));
+        pnlLogin.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Login Form", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.ABOVE_TOP));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel3.setText("Password");
+
+        txtLoginId.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel7.setText("Login Id");
+
+        btnLogin.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
+
+        pfPassword.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pointofsale/images/user_login.png"))); // NOI18N
+
+        javax.swing.GroupLayout pnlLoginLayout = new javax.swing.GroupLayout(pnlLogin);
+        pnlLogin.setLayout(pnlLoginLayout);
+        pnlLoginLayout.setHorizontalGroup(
+            pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLoginLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLoginLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(pfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLoginLayout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtLoginId, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        pnlLoginLayout.setVerticalGroup(
+            pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLoginLayout.createSequentialGroup()
+                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlLoginLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlLoginLayout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(txtLoginId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(pfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLogin)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+
+        pnlPayment.setBackground(new java.awt.Color(153, 153, 153));
+        pnlPayment.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Payment Process", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.ABOVE_TOP));
+        pnlPayment.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jPanel5.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -358,21 +442,21 @@ public class MainSale extends javax.swing.JFrame {
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlPaymentLayout = new javax.swing.GroupLayout(pnlPayment);
+        pnlPayment.setLayout(pnlPaymentLayout);
+        pnlPaymentLayout.setHorizontalGroup(
+            pnlPaymentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPaymentLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(pnlPaymentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 1, Short.MAX_VALUE))
         );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+        pnlPaymentLayout.setVerticalGroup(
+            pnlPaymentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPaymentLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -382,7 +466,28 @@ public class MainSale extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jMenu1.setText("File");
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 98, Short.MAX_VALUE)
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 23, Short.MAX_VALUE)
+        );
+
+        btnLogOut.setBackground(new java.awt.Color(204, 204, 204));
+        btnLogOut.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pointofsale/images/1440205754_Security2.png"))); // NOI18N
+        btnLogOut.setText("Log Out");
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogOutActionPerformed(evt);
+            }
+        });
+
+        mnExit.setText("File");
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pointofsale/images/sutdown.png"))); // NOI18N
@@ -392,11 +497,11 @@ public class MainSale extends javax.swing.JFrame {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        mnExit.add(jMenuItem1);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(mnExit);
 
-        jMenu2.setText("Admin");
+        mnAddProduct.setText("Admin");
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pointofsale/images/add-1-icon.png"))); // NOI18N
@@ -406,29 +511,39 @@ public class MainSale extends javax.swing.JFrame {
                 jMenuItem2ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem2);
+        mnAddProduct.add(jMenuItem2);
 
-        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pointofsale/images/advancedsettings.png"))); // NOI18N
-        jMenuItem3.setText("Manage Product");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        mnManageProduct.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
+        mnManageProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pointofsale/images/advancedsettings.png"))); // NOI18N
+        mnManageProduct.setText("Manage Product");
+        mnManageProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                mnManageProductActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem3);
+        mnAddProduct.add(mnManageProduct);
 
-        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pointofsale/images/users_group.png"))); // NOI18N
-        jMenuItem4.setText("Manage Customer");
-        jMenu2.add(jMenuItem4);
+        mnManageCustomer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
+        mnManageCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pointofsale/images/users_group.png"))); // NOI18N
+        mnManageCustomer.setText("Manage Customer");
+        mnManageCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnManageCustomerActionPerformed(evt);
+            }
+        });
+        mnAddProduct.add(mnManageCustomer);
 
-        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pointofsale/images/report.png"))); // NOI18N
-        jMenuItem5.setText("Report");
-        jMenu2.add(jMenuItem5);
+        mnReport.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        mnReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pointofsale/images/report.png"))); // NOI18N
+        mnReport.setText("Report");
+        mnReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnReportActionPerformed(evt);
+            }
+        });
+        mnAddProduct.add(mnReport);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(mnAddProduct);
 
         setJMenuBar(jMenuBar1);
 
@@ -441,21 +556,36 @@ public class MainSale extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 372, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13))
+                .addGap(272, 272, 272)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnlPayment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(12, 12, 12))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnLogOut))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(455, 455, 455)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(pnlPayment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(pnlLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(btnLogOut))
         );
 
         pack();
@@ -471,14 +601,14 @@ public class MainSale extends javax.swing.JFrame {
 
         int a = tblProduct.getSelectedRow();
         int b = 0;
-        int subTotal=0;
-        int grandTotal=0;
+        int subTotal = 0;
+        int grandTotal = 0;
         int qn = Integer.parseInt(txtQuantity.getText());
         Object data = (Object) tblProduct.getValueAt(a, b);
         JOptionPane.showMessageDialog(null, data);
 
         for (Product anProd : productList) {
-            
+
             if (anProd.getProductId() == Integer.parseInt(data.toString())) {
                 anProd.setSaleQuantity(qn);
                 cartList.add(anProd);
@@ -490,31 +620,107 @@ public class MainSale extends javax.swing.JFrame {
         cartModel.setNumRows(0);
 
         for (Product anProduct : cartList) {
-            subTotal=anProduct.getSaleQuantity()*anProduct.getPrice();
-            grandTotal+=subTotal;
+            subTotal = anProduct.getSaleQuantity() * anProduct.getPrice();
+            grandTotal += subTotal;
             cartModel.addRow(new Object[]{
                 anProduct.getProductId(),
                 anProduct.getProductName(),
                 anProduct.getPrice(),
-                anProduct.getSaleQuantity(),subTotal});
+                anProduct.getSaleQuantity(), subTotal});
         }
-lblGrandTotal.setText(Integer.toString(grandTotal));
+        lblGrandTotal.setText(Integer.toString(grandTotal));
     }//GEN-LAST:event_btnAddToCartActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+        super.dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void mnManageProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnManageProductActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+        if (login) {
+
+            ProductManager pm = new ProductManager();
+            pm.setVisible(true);
+
+        } else {
+            ShopLogin sl = new ShopLogin(loginInfo, this);
+            sl.setVisible(true);
+        }
+
+    }//GEN-LAST:event_mnManageProductActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-           AddProduct adp = new AddProduct(productList, this);
+        if (login) {
 
-        adp.setVisible(true);
+            addProductPage();
+
+        } else {
+            ShopLogin sl = new ShopLogin(loginInfo, this);
+            sl.setVisible(true);
+        }
+
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        // TODO add your handling code here:
+        String id = txtLoginId.getText();
+        String ps = pfPassword.getText();
+
+        //  System.out.println(loginInfo.get("eer"));
+        if (loginInfo.containsKey(id)) {
+            String s = (String) loginInfo.get(id);
+            if (s.compareTo(ps) == 0) {
+                loginShow();
+
+                login = true;
+            } else {
+
+                JOptionPane.showMessageDialog(null, "Wrong Password");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Wrong Id");
+        }
+
+
+    }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        // TODO add your handling code here:
+        txtLoginId.setText(null);
+        pfPassword.setText(null);
+        login = false;
+        pnlPayment.hide();
+        pnlLogin.show();
+    }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void mnManageCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnManageCustomerActionPerformed
+        // TODO add your handling code here:
+        
+            if (login) {
+
+           CustomerManager cm=new CustomerManager();
+           cm.setVisible(true);
+
+        } else {
+            ShopLogin sl = new ShopLogin(loginInfo, this);
+            sl.setVisible(true);
+        }
+    }//GEN-LAST:event_mnManageCustomerActionPerformed
+
+    private void mnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnReportActionPerformed
+        // TODO add your handling code here:
+            if (login) {
+
+           ReportManager rm=new ReportManager();
+           rm.setVisible(true);
+
+        } else {
+            ShopLogin sl = new ShopLogin(loginInfo, this);
+            sl.setVisible(true);
+        }
+    }//GEN-LAST:event_mnReportActionPerformed
 
     public void productTableLoader() {
         model = (DefaultTableModel) tblProduct.getModel();
@@ -559,13 +765,18 @@ lblGrandTotal.setText(Integer.toString(grandTotal));
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainSale().setVisible(true);
+                MainSale ms = new MainSale();
+                ms.setExtendedState(ms.MAXIMIZED_BOTH);
+
+                ms.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddToCart;
+    private javax.swing.JButton btnLogOut;
+    private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnReturn;
     private javax.swing.JButton btnSale;
     private javax.swing.JButton btnSearch;
@@ -578,17 +789,15 @@ lblGrandTotal.setText(Integer.toString(grandTotal));
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -599,13 +808,33 @@ lblGrandTotal.setText(Integer.toString(grandTotal));
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblGrandTotal;
+    private javax.swing.JMenu mnAddProduct;
+    private javax.swing.JMenu mnExit;
+    private javax.swing.JMenuItem mnManageCustomer;
+    private javax.swing.JMenuItem mnManageProduct;
+    private javax.swing.JMenuItem mnReport;
+    private javax.swing.JPasswordField pfPassword;
+    private javax.swing.JPanel pnlLogin;
+    private javax.swing.JPanel pnlPayment;
     private javax.swing.JTable tblProduct;
     private javax.swing.JTable tblProductCart;
     private javax.swing.JTextField txtChange;
     private javax.swing.JLabel txtCharge;
     private javax.swing.JTextField txtDiscount;
     private javax.swing.JTextField txtIntended;
+    private javax.swing.JTextField txtLoginId;
     private javax.swing.JTextField txtQuantity;
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
+
+    public void addProductPage() {
+        AddProduct adp = new AddProduct(productList, this);
+
+        adp.setVisible(true);
+    }
+
+    public void loginShow() {
+        pnlPayment.show();
+        pnlLogin.hide();
+    }
 }
