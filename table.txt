@@ -1,0 +1,14 @@
+ItemNum
+ItemName
+Store_ID
+Cost
+Price
+Retail_Price
+In_Stock
+Quantity
+Tax_1
+Vendor_Number
+Inv_Num_Barcode_Labels
+Num_Bonus_Points
+
+ItemType
