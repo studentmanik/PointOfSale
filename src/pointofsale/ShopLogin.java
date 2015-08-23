@@ -7,7 +7,7 @@ package pointofsale;
 
 import java.util.HashMap;
 import javax.swing.JOptionPane;
-import static pointofsale.MainSale.login;
+
 
 /**
  *
@@ -15,23 +15,24 @@ import static pointofsale.MainSale.login;
  */
 public class ShopLogin extends javax.swing.JFrame {
 
-    HashMap loginInfo;
-    MainSale ms;
+    HashMap loginInfo = new HashMap();
 
     /**
      * Creates new form ShopLogin
      */
     public ShopLogin() {
         initComponents();
+        loginInfo.put("01", "1234");
+        loginInfo.put("02", "4321");
+
     }
 
-    ShopLogin(HashMap loginInfo, MainSale aThis) {
-        this.loginInfo = loginInfo;
-        ms = aThis;
-        initComponents();
-        //    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+//    ShopLogin(HashMap loginInfo, MainSale aThis) {
+//        this.loginInfo = loginInfo;
+//        ms = aThis;
+//        initComponents();
+//        //    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -49,6 +50,7 @@ public class ShopLogin extends javax.swing.JFrame {
         pfPassword = new javax.swing.JPasswordField();
         jLabel8 = new javax.swing.JLabel();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         pnlLogin.setBackground(new java.awt.Color(153, 153, 153));
@@ -79,7 +81,7 @@ public class ShopLogin extends javax.swing.JFrame {
         pnlLoginLayout.setHorizontalGroup(
             pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLoginLayout.createSequentialGroup()
-                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -112,7 +114,7 @@ public class ShopLogin extends javax.swing.JFrame {
                             .addComponent(pfPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnLogin)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 34, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -124,7 +126,9 @@ public class ShopLogin extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -133,25 +137,16 @@ public class ShopLogin extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        String id = txtLoginId.getText();
-        String ps = pfPassword.getText();
-
-        //  System.out.println(loginInfo.get("eer"));
-        if (loginInfo.containsKey(id)) {
-            String s = (String) loginInfo.get(id);
-            if (s.compareTo(ps) == 0) {
-                //    ms.pnlPayment.show();
-                login = true;
-                ms.addProductPage();
-                ms.loginShow();
-                super.dispose();
-            } else {
-
-                JOptionPane.showMessageDialog(null, "Wrong Password");
-            }
+        if (loginvalidation()) {
+            MainSale ms = new MainSale();
+            ms.setVisible(true);
+            ms.setExtendedState(ms.MAXIMIZED_BOTH);
+            this.dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Wrong Id");
+            JOptionPane.showMessageDialog(null, "Login Id or Password Wrong");
         }
+
+
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
@@ -198,4 +193,26 @@ public class ShopLogin extends javax.swing.JFrame {
     private javax.swing.JPanel pnlLogin;
     private javax.swing.JTextField txtLoginId;
     // End of variables declaration//GEN-END:variables
+
+    private boolean loginvalidation() {
+        boolean loginResult;
+        String id = txtLoginId.getText();
+        String ps = pfPassword.getText();
+
+        if (loginInfo.containsKey(id)) {
+            String s = (String) loginInfo.get(id);
+            if (s.compareTo(ps) == 0) {
+
+                loginResult = true;
+
+            } else {
+                loginResult = false;
+
+            }
+        } else {
+            loginResult = false;
+
+        }
+        return loginResult;
+    }
 }
