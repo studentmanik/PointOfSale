@@ -22,7 +22,7 @@ public class ShopLogin extends javax.swing.JFrame {
      */
     public ShopLogin() {
         initComponents();
-        loginInfo.put("01", "1234");
+        loginInfo.put("1", "");
         loginInfo.put("02", "4321");
 
     }

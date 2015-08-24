@@ -9,29 +9,10 @@ package pointofsale;
  *
  * @author Md Mamin
  */
-public class Product {
-
+public class CartItems {
     private int productId;
-    private String productName;
+    private  String productName;
     private int price;
-    private int purchasePrice;
-    private int discount=0;
-
-    public int getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(int discount) {
-        this.discount = discount;
-    }
-
-    public int getPurchasePrice() {
-        return purchasePrice;
-    }
-
-    public void setPurchasePrice(int purchasePrice) {
-        this.purchasePrice = purchasePrice;
-    }
     private int quantity;
     private int saleQuantity;
 
@@ -74,5 +55,5 @@ public class Product {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
+    
 }
