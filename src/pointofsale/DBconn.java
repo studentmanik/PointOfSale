@@ -55,7 +55,7 @@ public class DBconn {
         try {
             stmt = (Statement) conn.createStatement();
             rs = stmt.executeQuery(sql);
-           return rs;
+            return rs;
         } catch (SQLException sqe) {
             rs = null;
         }
@@ -66,7 +66,7 @@ public class DBconn {
         Statement stmt = null;
         try {
             stmt = (Statement) conn.createStatement();
-            stmt.executeQuery(sql);
+            stmt.executeUpdate(sql);
             return true;
         } catch (SQLException sqe) {
             return false;

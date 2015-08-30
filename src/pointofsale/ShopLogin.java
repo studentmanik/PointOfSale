@@ -22,7 +22,7 @@ public class ShopLogin extends javax.swing.JFrame {
      */
     public ShopLogin() {
         initComponents();
-        loginInfo.put("1", "");
+        loginInfo.put("", "");
         loginInfo.put("02", "4321");
 
     }
@@ -140,7 +140,7 @@ public class ShopLogin extends javax.swing.JFrame {
         if (loginvalidation()) {
             MainSale ms = new MainSale();
             ms.setVisible(true);
-            ms.setExtendedState(ms.MAXIMIZED_BOTH);
+          //  ms.setExtendedState(ms.MAXIMIZED_BOTH);
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Login Id or Password Wrong");
