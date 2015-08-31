@@ -30,10 +30,6 @@ import javax.swing.table.TableColumnModel;
  */
 public class MainSale extends javax.swing.JFrame implements KeyListener {
 
-    
-
-    DefaultTableModel model;
-    DefaultTableModel cartModel;
     public int grandTotal;
     public int discount = 0;
     public int Intended = 0;
@@ -47,8 +43,8 @@ public class MainSale extends javax.swing.JFrame implements KeyListener {
      */
     public MainSale() {
         initComponents();
-        products = getAllProduct();
-        productTableLoader();
+        getAllProduct("SELECT * FROM `product`");
+        //  productTableLoader();
         tableDesigner();
 
     }
@@ -554,35 +550,31 @@ public class MainSale extends javax.swing.JFrame implements KeyListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-
+        String qr = "SELECT * FROM product WHERE product_name LIKE \"%" + txtSearch.getText() + "%\"";
+        getAllProduct(qr);
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnAddToCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToCartActionPerformed
+//        System.out.println(txtQuantity.getText().isEmpty() + "" + tblProduct.getSelectedRow());
+//        if (!txtQuantity.getText().isEmpty() && tblProduct.getSelectedRow() > -1) {
+            int a = tblProduct.getSelectedRow();
+            int b = 0;
+            int qn = Integer.parseInt(txtQuantity.getText());
+            Object data = (Object) tblProduct.getValueAt(a, b);
+            Product anPr2 = (Product) products.get(Integer.parseInt(data.toString()));
+            //  JOptionPane.showMessageDialog(null, anPr2.getProductName());
+            Product productcart = new Product();
+            productcart.setProductId(anPr2.getProductId());
+            productcart.setProductName(anPr2.getProductName());
+            productcart.setPurchasePrice(anPr2.getPurchasePrice());
+            productcart.setPrice(anPr2.getPrice());
+            productcart.setQuantity(anPr2.getQuantity());
+            productcart.setSaleQuantity(qn);
+            cartList.put(anPr2.getProductId(), productcart);
+            cartTableloader();
+            TotalCalculator();
 
-        int a = tblProduct.getSelectedRow();
-        int b = 0;
-
-        int qn = Integer.parseInt(txtQuantity.getText());
-        Object data = (Object) tblProduct.getValueAt(a, b);
-
-        Product anPr2 = (Product) products.get(Integer.parseInt(data.toString()));
-        //  JOptionPane.showMessageDialog(null, anPr2.getProductName());
-
-        Product productcart = new Product();
-
-        productcart.setProductId(anPr2.getProductId());
-        productcart.setProductName(anPr2.getProductName());
-        productcart.setPurchasePrice(anPr2.getPurchasePrice());
-        productcart.setPrice(anPr2.getPrice());
-        productcart.setQuantity(anPr2.getQuantity());
-        productcart.setSaleQuantity(qn);
-
-        cartList.put(anPr2.getProductId(), productcart);
-
-        cartTableloader();
-        TotalCalculator();
-
-
+//        }
     }//GEN-LAST:event_btnAddToCartActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -602,8 +594,8 @@ public class MainSale extends javax.swing.JFrame implements KeyListener {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
 
-       AddProduct an=  new AddProduct( this);
-       an.setVisible(true);
+        AddProduct an = new AddProduct(this);
+        an.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
@@ -649,8 +641,8 @@ public class MainSale extends javax.swing.JFrame implements KeyListener {
         } else {
             JOptionPane.showMessageDialog(null, "Please select Item");
         }
-TotalCalculator();
-       // new MsgBox("Are You Sure Delete from Cart", evt, cartList, this).setVisible(true);
+        TotalCalculator();
+        // new MsgBox("Are You Sure Delete from Cart", evt, cartList, this).setVisible(true);
 
     }//GEN-LAST:event_btnCartProductDeleteActionPerformed
 
@@ -665,13 +657,13 @@ TotalCalculator();
                 Object data = (Object) tblProductCart.getValueAt(a, b);
                 int id = Integer.parseInt(data.toString());
                 Product anCartProduct = (Product) cartList.get(id);
-       //         anCartProduct.setDiscount(Integer.parseInt(ms));
+                //         anCartProduct.setDiscount(Integer.parseInt(ms));
                 cartTableloader();
             }
         } else {
             JOptionPane.showMessageDialog(null, "Please select Item");
         }
-         TotalCalculator();
+        TotalCalculator();
     }//GEN-LAST:event_btnDiscountActionPerformed
 
     private void btnChangeQtyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeQtyActionPerformed
@@ -686,13 +678,13 @@ TotalCalculator();
                 Object data = (Object) tblProductCart.getValueAt(a, b);
                 int id = Integer.parseInt(data.toString());
                 Product anCartProduct = (Product) cartList.get(id);
-             //   anCartProduct.setSaleQuantity(Integer.parseInt(ms));
+                //   anCartProduct.setSaleQuantity(Integer.parseInt(ms));
                 cartTableloader();
             }
         } else {
             JOptionPane.showMessageDialog(null, "Please select Item");
         }
-         TotalCalculator();
+        TotalCalculator();
 
     }//GEN-LAST:event_btnChangeQtyActionPerformed
 
@@ -708,17 +700,17 @@ TotalCalculator();
                 Object data = (Object) tblProductCart.getValueAt(a, b);
                 int id = Integer.parseInt(data.toString());
                 Product anCartProduct = (Product) cartList.get(id);
-               // anCartProduct.setPrice(Integer.parseInt(ms));
+                // anCartProduct.setPrice(Integer.parseInt(ms));
                 cartTableloader();
             }
         } else {
             JOptionPane.showMessageDialog(null, "Please select Item");
         }
-         TotalCalculator();
+        TotalCalculator();
     }//GEN-LAST:event_btnChangePriceActionPerformed
 
     public void productTableLoader() {
-        model = (DefaultTableModel) tblProduct.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
         model.setNumRows(0);
         Set entries = products.entrySet();
         Iterator iterator = entries.iterator();
@@ -818,29 +810,34 @@ TotalCalculator();
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 
-    public HashMap getAllProduct() {
-        HashMap products = new HashMap();
-
+    public void getAllProduct(String qr) {
+        //      HashMap products = new HashMap();
+        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
+        model.setNumRows(0);
         DBconn conn = new DBconn();
         conn.getConnection();
-        ResultSet rs = conn.getResultSet("SELECT * FROM `product`");
+        ResultSet rs = conn.getResultSet(qr);
         try {
             while (rs.next()) {
-                Product anProduct = new Product();
+                //      Product anProduct = new Product();
                 //Retrieve by column name
-                anProduct.setProductId(rs.getInt("product_id"));
-                anProduct.setProductName(rs.getString("product_name"));
+                //      anProduct.setProductId(rs.getInt("product_id"));
+                //      anProduct.setProductName(rs.getString("product_name"));
 //                anProduct.setPurchasePrice(rs.getInt("purchase_price"));
 //                anProduct.setPrice(rs.getInt("sale_price"));
 //                anProduct.setQuantity(rs.getInt("quantity"));
-
-                products.put(rs.getInt("product_id"), anProduct);
+                model.addRow(new Object[]{
+                    rs.getInt("product_id"),
+                    rs.getString("product_name"),
+                    0,
+                    0});
+                //     products.put(rs.getInt("product_id"), anProduct);
             }
         } catch (SQLException ex) {
             Logger.getLogger(MainSale.class.getName()).log(Level.SEVERE, null, ex);
         }
         conn.closeConnection();
-        return products;
+        //  return products;
     }
 
     private void tableDesigner() {
@@ -859,7 +856,7 @@ TotalCalculator();
     public void cartTableloader() {
         int subTotal = 0;
         grandTotal = 0;
-        cartModel = (DefaultTableModel) tblProductCart.getModel();
+        DefaultTableModel cartModel = (DefaultTableModel) tblProductCart.getModel();
         cartModel.setNumRows(0);
         Set entries = cartList.entrySet();
         int i = 0;
@@ -907,8 +904,9 @@ TotalCalculator();
     public static boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
     }
+
     //   throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  public static boolean isRowSelected(JTable a) {
+    public static boolean isRowSelected(JTable a) {
         boolean rs;
 
         if (a.getSelectedRow() > -1) {
@@ -918,6 +916,7 @@ TotalCalculator();
         }
         return rs;
     }
+
     private void TotalCalculator() {
 
         lblGrandTotal.setText(grandTotal - discount + "");
