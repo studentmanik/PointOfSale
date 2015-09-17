@@ -35,7 +35,7 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
     static int id = 0;
     private int selectedProduct;
     public DBManager dbManager = new DBManager();
-   public JComboBox cm;
+    public JComboBox cm;
 
     /**
      * Creates new form AddProduct
@@ -50,7 +50,7 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
         txtProductId.disable();
         tblAllProduct.addMouseListener(this);
         // addProductTableLoader();
-cm=cbCategory;
+        cm = cbCategory;
     }
 
     /**
@@ -368,6 +368,8 @@ cm=cbCategory;
 
         Object item1 = cbBrand.getSelectedItem();
         Object item2 = cbCategory.getSelectedItem();
+        System.out.println(cbBrand.getSelectedIndex());
+        System.out.println(cbCategory.getSelectedIndex());
         if (cbBrand.getSelectedIndex() != 0 && cbCategory.getSelectedIndex() != 0) {
             int value2 = ((ComboBoxLoader) item2).getCategory_id();
             int value1 = ((Brand) item1).getId();
@@ -423,7 +425,11 @@ cm=cbCategory;
 
     private void AddBrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddBrandActionPerformed
         String ms = JOptionPane.showInputDialog(null, "Enter Brand Name", "Brand Name ", JOptionPane.DEFAULT_OPTION);
-        dbManager.saveBrand(ms);
+        if (dbManager.saveBrand(ms)) {
+            getAllBrand();
+        }
+  
+        
     }//GEN-LAST:event_AddBrandActionPerformed
 
     private void btnAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCategoryActionPerformed
@@ -456,14 +462,14 @@ cm=cbCategory;
         addProductTableModel.setNumRows(0);
         DBconn conn = new DBconn();
         conn.getConnection();
-        ResultSet rs = conn.getResultSet("SELECT * FROM product,category,brand WHERE product.category_id=category.category_id AND product.brand_id=brand.brand_id");
+        ResultSet rs = conn.getResultSet("SELECT * FROM addproduct");
         int i = 0;
         try {
             while (rs.next()) {
                 addProductTableModel.addRow(new Object[]{
                     rs.getInt("product_id"),
                     rs.getString("product_name"),
-                    rs.getString("category_name"),
+                    rs.getString("name"),
                     rs.getString("brand_name")});
 
             }
@@ -479,11 +485,13 @@ cm=cbCategory;
         DBconn conn = new DBconn();
         conn.getConnection();
         ResultSet rs = conn.getResultSet("SELECT * FROM brand");
+        cbBrand.removeAllItems();
+        cbBrand.addItem("Select One Brand");
         try {
             while (rs.next()) {
 
                 Brand anBrand = new Brand();
-                anBrand.setId(rs.getInt("brand_id"));
+                anBrand.setId(rs.getInt("id"));
                 anBrand.setName(rs.getString("brand_Name"));
 
                 cbBrand.addItem(anBrand);
@@ -500,12 +508,13 @@ cm=cbCategory;
         String qr = "INSERT INTO `product` (`product_id`, `product_name`, `category_id`, `brand_id`) VALUES (NULL, '" + Name + "', '" + category + "', '" + brand + "')";
         if (MainSale.isNumeric(id)) {
             qr = "UPDATE `product` SET `product_name`='" + Name + "',`category_id` = '" + category + "', `brand_id` = '" + brand + "' WHERE `product_id` =" + id;
+            
         }
-
+        
         boolean rs = conn.insertData(qr);
 
         conn.closeConnection();
-        System.out.println(qr);
+     
         if (rs) {
 
             JOptionPane.showMessageDialog(null, "Saved");

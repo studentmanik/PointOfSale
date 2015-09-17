@@ -1,0 +1,8 @@
+INSERT INTO `pointofsale`.`user` (`user_id`, `user_name`, `full_name`, `role`, `password`) VALUES (NULL, 'manik', 'Md Manik', '1', 'manik123');
+SELECT * FROM inventory RIGHT JOIN product ON inventory.product_id=product.product_id
+SELECT i.id,i.purchase_price,i.minimum_sale_price,i.quantity,p.product_name  FROM inventory i RIGHT JOIN product p ON i.product_id=p.product_id
+CREATE VIEW mainproduct AS ( SELECT i.id,i.purchase_price,i.minimum_sale_price,i.quantity,p.product_name FROM inventory i RIGHT JOIN product p ON i.product_id=p.product_id )
+ALTER VIEW mainproduct AS ( SELECT i.id,i.purchase_price,i.minimum_sale_price,i.quantity,p.product_name,p.product_id FROM inventory i RIGHT JOIN product p ON i.product_id=p.product_id )
+ALTER VIEW mainproduct AS ( SELECT i.id,i.purchase_price,i.minimum_sale_price,i.quantity,p.product_name,p.product_id FROM inventory i INNER JOIN product p ON i.product_id=p.product_id )
+CREATE VIEW addproduct AS ( SELECT p.product_id,p.product_name,b.brand_Name,c.name FROM product p INNER JOIN category c ON p.category_id=c.id INNER JOIN brand b ON p.brand_id=b.id)
+

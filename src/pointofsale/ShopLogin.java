@@ -15,15 +15,14 @@ import javax.swing.JOptionPane;
  */
 public class ShopLogin extends javax.swing.JFrame {
 
-    HashMap loginInfo = new HashMap();
-
+    
+DBManager bdmanager=new DBManager();
     /**
      * Creates new form ShopLogin
      */
     public ShopLogin() {
         initComponents();
-        loginInfo.put("", "");
-        loginInfo.put("02", "4321");
+    
 
     }
 
@@ -137,7 +136,9 @@ public class ShopLogin extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        if (loginvalidation()) {
+         String id = txtLoginId.getText();
+        String ps = pfPassword.getText();
+        if (bdmanager.getUserName(id,ps )) {
             MainSale ms = new MainSale();
             ms.setVisible(true);
           //  ms.setExtendedState(ms.MAXIMIZED_BOTH);
@@ -194,25 +195,5 @@ public class ShopLogin extends javax.swing.JFrame {
     private javax.swing.JTextField txtLoginId;
     // End of variables declaration//GEN-END:variables
 
-    private boolean loginvalidation() {
-        boolean loginResult;
-        String id = txtLoginId.getText();
-        String ps = pfPassword.getText();
-
-        if (loginInfo.containsKey(id)) {
-            String s = (String) loginInfo.get(id);
-            if (s.compareTo(ps) == 0) {
-
-                loginResult = true;
-
-            } else {
-                loginResult = false;
-
-            }
-        } else {
-            loginResult = false;
-
-        }
-        return loginResult;
-    }
+    
 }

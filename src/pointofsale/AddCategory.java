@@ -30,7 +30,7 @@ public class AddCategory extends javax.swing.JFrame implements MouseListener {
      */
     public AddCategory(AddProduct addProduct) {
         initComponents();
-this.addProduct=addProduct;
+        this.addProduct = addProduct;
         TableColumnModel colsize1 = tblCategoryView.getColumnModel();
         colsize1.getColumn(0).setPreferredWidth(10);
         tblCategoryView.addMouseListener(this);
@@ -124,9 +124,9 @@ this.addProduct=addProduct;
                     .addComponent(jLabel2)
                     .addComponent(cbCategoryParent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSave)
-                    .addComponent(btnCancel))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnCancel)
+                    .addComponent(btnSave))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -241,9 +241,9 @@ this.addProduct=addProduct;
             if (cbCategoryParent.getSelectedIndex() != 0) {
                 parent_category_id = ((ComboBoxLoader) item1).getCategory_id();
             }
-            String qr = "INSERT INTO `pointofsale`.`category` (`category_id`, `category_name`, `parent_id`) VALUES (NULL, '" + txtCategoryName.getText() + "', '" + parent_category_id + "')";
+            String qr = "INSERT INTO `pointofsale`.`category` (`id`, `name`, `parent_id`) VALUES (NULL, '" + txtCategoryName.getText() + "', '" + parent_category_id + "')";
             if (category_id != 0) {
-                qr = "UPDATE `pointofsale`.`category` SET `category_name` = '" + txtCategoryName.getText() + "', `parent_id` = '" + parent_category_id + "' WHERE `category`.`category_id` =" + category_id;
+                qr = "UPDATE `pointofsale`.`category` SET `name` = '" + txtCategoryName.getText() + "', `parent_id` = '" + parent_category_id + "' WHERE `category`.`id` =" + category_id;
             }
             dbManager.saveCategory(qr);
             txtCategoryName.setText(null);
@@ -267,7 +267,7 @@ this.addProduct=addProduct;
             int ms = JOptionPane.showConfirmDialog(null, "Delete Row ", "Are you Sure Delete " + tblCategoryView.getValueAt(tblCategoryView.getSelectedRow(), 1).toString(), JOptionPane.YES_NO_OPTION);
             System.out.println(ms);
             if (ms == 0) {
-                String qr = "DELETE FROM `category` WHERE `category_id` =" + (int) tblCategoryView.getValueAt(tblCategoryView.getSelectedRow(), 0);
+                String qr = "DELETE FROM `category` WHERE `id` =" + (int) tblCategoryView.getValueAt(tblCategoryView.getSelectedRow(), 0);
                 dbManager.inserOrDelete(qr);
             }
 

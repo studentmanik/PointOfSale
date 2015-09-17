@@ -22,26 +22,24 @@ public class DBManager {
 
     DBconn conn = new DBconn();
 
-    public void saveBrand(String BarndName) {
+    public boolean saveBrand(String BarndName) {
         conn.getConnection();
-        String sa = "INSERT INTO`brand` (`brand_id`, `brand_Name`) VALUES (NULL, '" + BarndName + "')";
+        String sa = "INSERT INTO`brand` (`id`, `brand_Name`) VALUES (NULL, '" + BarndName + "')";
         boolean rs = conn.insertData(sa);
-        if (rs) {
-            System.out.println(sa);
-        } else {
-            System.out.println(sa);
-        }
         conn.closeConnection();
+        return rs;
     }
 
     public void getAllCatagory(JComboBox cbCategory) {
         conn.getConnection();
         ResultSet rs = conn.getResultSet("SELECT * FROM category");
+        cbCategory.removeAllItems();
+        cbCategory.addItem("Select one category");
         try {
             while (rs.next()) {
                 ComboBoxLoader anCatagory = new ComboBoxLoader();
-                anCatagory.setCategory_id(rs.getInt("category_id"));
-                anCatagory.setCategory_name(rs.getString("category_name"));
+                anCatagory.setCategory_id(rs.getInt("id"));
+                anCatagory.setCategory_name(rs.getString("name"));
                 anCatagory.setParent_id(rs.getInt("parent_id"));
                 cbCategory.addItem(anCatagory);
             }
@@ -49,6 +47,46 @@ public class DBManager {
             Logger.getLogger(MainSale.class.getName()).log(Level.SEVERE, null, ex);
         }
         conn.closeConnection();
+    }
+
+//    public User getUser(String name, String password) {
+//        conn.getConnection();
+//        ResultSet rs = conn.getResultSet("SELECT * FROM user WHARE user_name=" + name + " AND password =" + password);
+//
+//        User anUser = null;
+//        try {
+//            while (rs.next()) {
+//                ComboBoxLoader anCatagory = new ComboBoxLoader();
+//                anCatagory.setCategory_id(rs.getInt("id"));
+//                anCatagory.setCategory_name(rs.getString("name"));
+//                anCatagory.setParent_id(rs.getInt("parent_id"));
+//
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(MainSale.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        conn.closeConnection();
+//        return anUser;
+//    }
+    public Product getProduct(String qr) {
+        conn.getConnection();
+        ResultSet rs = conn.getResultSet(qr);
+
+        Product anProduct = null;
+        try {
+            while (rs.next()) {
+                anProduct = new Product();
+                anProduct.setProductId(rs.getInt("Product_id"));
+                anProduct.setProductName(rs.getString("product_name"));
+                anProduct.setQuantity(rs.getInt("quantity"));
+                anProduct.setPrice(rs.getInt("minimum_sale_price"));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MainSale.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        conn.closeConnection();
+        return anProduct;
     }
 
     void saveCategory(String qr) {
@@ -83,8 +121,8 @@ public class DBManager {
         try {
             while (rs.next()) {
                 tblCategory.addRow(new Object[]{
-                    rs.getInt("category_id"),
-                    rs.getString("category_name"),
+                    rs.getInt("id"),
+                    rs.getString("name"),
                     rs.getInt("parent_id")});
             }
         } catch (SQLException ex) {
@@ -92,5 +130,24 @@ public class DBManager {
         }
         conn.closeConnection();
 
+    }
+
+    boolean getUserName(String id, String ps) {
+        String qr = "SELECT * FROM `user` WHERE user_name=\"" + id + "\"";
+        conn.getConnection();
+        ResultSet rs = conn.getResultSet(qr);
+        boolean result = false;
+        try {
+            while (rs.next()) {
+                if (ps.equals(rs.getString("password"))) {
+                    System.out.println(rs.getString("password"));
+                    result = true;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MainSale.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        conn.closeConnection();
+        return result;
     }
 }

@@ -33,17 +33,17 @@ public class MainSale extends javax.swing.JFrame implements KeyListener {
     public int grandTotal;
     public int discount = 0;
     public int Intended = 0;
+    DBManager anManager = new DBManager();
 
     // ArrayList<Product> cartList = new ArrayList<Product>();
-    HashMap cartList = new HashMap();
-    HashMap products;
+    HashMap<Integer, Product> cartList = new HashMap<Integer, Product>();
 
     /**
      * Creates new form MainSale
      */
     public MainSale() {
         initComponents();
-        getAllProduct("SELECT * FROM `product`");
+        getAllProduct("SELECT * FROM mainproduct");
         //  productTableLoader();
         tableDesigner();
 
@@ -137,7 +137,7 @@ public class MainSale extends javax.swing.JFrame implements KeyListener {
 
             },
             new String [] {
-                "ID", "Name", "Sale Price", "Quantity"
+                "ID", "Name", "Buy Price", "Sale Price", "Quantity"
             }
         ));
         jScrollPane1.setViewportView(tblProduct);
@@ -537,7 +537,7 @@ public class MainSale extends javax.swing.JFrame implements KeyListener {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pnlPayment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 230, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 118, Short.MAX_VALUE)
                         .addComponent(btnLogOut))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -550,31 +550,40 @@ public class MainSale extends javax.swing.JFrame implements KeyListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String qr = "SELECT * FROM product WHERE product_name LIKE \"%" + txtSearch.getText() + "%\"";
+        String qr = "SELECT * FROM mainproduct WHERE product_name LIKE \"%" + txtSearch.getText() + "%\"";
         getAllProduct(qr);
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnAddToCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToCartActionPerformed
-//        System.out.println(txtQuantity.getText().isEmpty() + "" + tblProduct.getSelectedRow());
-//        if (!txtQuantity.getText().isEmpty() && tblProduct.getSelectedRow() > -1) {
+
+        if (!txtQuantity.getText().isEmpty() && tblProduct.getSelectedRow() > -1) {
             int a = tblProduct.getSelectedRow();
             int b = 0;
             int qn = Integer.parseInt(txtQuantity.getText());
-            Object data = (Object) tblProduct.getValueAt(a, b);
-            Product anPr2 = (Product) products.get(Integer.parseInt(data.toString()));
+            int productId = Integer.parseInt(tblProduct.getValueAt(a, b).toString());
+            String qr = "SELECT * FROM `mainproduct` WHERE id=" + productId;
+            Product anProduct = anManager.getProduct(qr);
+            if (anProduct != null) {
+                anProduct.setSaleQuantity(qn);
+                cartList.put(anProduct.getProductId(), anProduct);
+                cartTableloader();
+                TotalCalculator();
+            } else {
+                JOptionPane.showMessageDialog(null, "Select Product or Quantity");
+            }
             //  JOptionPane.showMessageDialog(null, anPr2.getProductName());
-            Product productcart = new Product();
-            productcart.setProductId(anPr2.getProductId());
-            productcart.setProductName(anPr2.getProductName());
-            productcart.setPurchasePrice(anPr2.getPurchasePrice());
-            productcart.setPrice(anPr2.getPrice());
-            productcart.setQuantity(anPr2.getQuantity());
-            productcart.setSaleQuantity(qn);
-            cartList.put(anPr2.getProductId(), productcart);
-            cartTableloader();
-            TotalCalculator();
+            ;
 
-//        }
+//            productcart.setProductId(anPr2.getProductId());
+//            productcart.setProductName(anPr2.getProductName());
+//            productcart.setPurchasePrice(anPr2.getPurchasePrice());
+//            productcart.setPrice(anPr2.getPrice());
+//            productcart.setQuantity(anPr2.getQuantity());
+//            productcart.setSaleQuantity(qn);
+//            cartList.put(anPr2.getProductId(), productcart);
+        } else {
+            JOptionPane.showMessageDialog(null, "Select Product or Quantity");
+        }
     }//GEN-LAST:event_btnAddToCartActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -710,22 +719,22 @@ public class MainSale extends javax.swing.JFrame implements KeyListener {
     }//GEN-LAST:event_btnChangePriceActionPerformed
 
     public void productTableLoader() {
-        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
-        model.setNumRows(0);
-        Set entries = products.entrySet();
-        Iterator iterator = entries.iterator();
-        while (iterator.hasNext()) {
-            Map.Entry mapping = (Map.Entry) iterator.next();
-            Product anProduct = (Product) products.get(Integer.parseInt(mapping.getKey().toString()));
-            model.addRow(new Object[]{
-                anProduct.getProductId(),
-                anProduct.getProductName(),
-                anProduct.getPrice(),
-                anProduct.getQuantity(), anProduct});
-        }
+        getAllProduct("SELECT * FROM mainproduct");
+//        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
+//        model.setNumRows(0);
+//        Set entries = products.entrySet();
+//        Iterator iterator = entries.iterator();
+//        while (iterator.hasNext()) {
+//            Map.Entry mapping = (Map.Entry) iterator.next();
+//            Product anProduct = (Product) products.get(Integer.parseInt(mapping.getKey().toString()));
+//            model.addRow(new Object[]{
+//                anProduct.getProductId(),
+//                anProduct.getProductName(),
+//                anProduct.getPrice(),
+//                anProduct.getQuantity(), anProduct});
+//        }
 
     }
-
     /**
      * @param args the command line arguments
      */
@@ -829,8 +838,8 @@ public class MainSale extends javax.swing.JFrame implements KeyListener {
                 model.addRow(new Object[]{
                     rs.getInt("product_id"),
                     rs.getString("product_name"),
-                    0,
-                    0});
+                    rs.getString("purchase_price"),
+                    rs.getString("quantity"), rs.getString("minimum_sale_price")});
                 //     products.put(rs.getInt("product_id"), anProduct);
             }
         } catch (SQLException ex) {
