@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pointofsale;
+package pos.Model;
+
+import pointofsale.*;
 
 /**
  *
@@ -32,7 +34,7 @@ public class Brand {
 
     @Override
     public String toString() {
-        return getName();
+        return getName(); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

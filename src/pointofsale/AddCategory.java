@@ -9,11 +9,17 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import pos.BLL.ProductManager;
+import pos.Model.Catagory;
 
 /**
  *
@@ -22,8 +28,8 @@ import javax.swing.table.TableColumnModel;
 public class AddCategory extends javax.swing.JFrame implements MouseListener {
 
     public AddProduct addProduct;
-    public DBManager dbManager = new DBManager();
-    int category_id;
+    ProductManager anProductManager = new ProductManager();
+    int category_id = 0;
 
     /**
      * Creates new form AddCategory
@@ -34,8 +40,8 @@ public class AddCategory extends javax.swing.JFrame implements MouseListener {
         TableColumnModel colsize1 = tblCategoryView.getColumnModel();
         colsize1.getColumn(0).setPreferredWidth(10);
         tblCategoryView.addMouseListener(this);
-        dbManager.getAllCategoryes(tblCategoryView);
-        dbManager.getAllCatagory(cbCategoryParent);
+        tableCategoryLoader(anProductManager.getAllCatagory());
+        categoryComboBoxLoader(0, anProductManager.getAllCatagory());
     }
 
     /**
@@ -80,7 +86,7 @@ public class AddCategory extends javax.swing.JFrame implements MouseListener {
             }
         });
 
-        btnCancel.setText("Cancel");
+        btnCancel.setText("Close");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
@@ -239,15 +245,18 @@ public class AddCategory extends javax.swing.JFrame implements MouseListener {
             Object item1 = cbCategoryParent.getSelectedItem();
             int parent_category_id = 0;
             if (cbCategoryParent.getSelectedIndex() != 0) {
-                parent_category_id = ((ComboBoxLoader) item1).getCategory_id();
+                parent_category_id = ((Catagory) item1).getCategory_id();
             }
-            String qr = "INSERT INTO `pointofsale`.`category` (`id`, `name`, `parent_id`) VALUES (NULL, '" + txtCategoryName.getText() + "', '" + parent_category_id + "')";
-            if (category_id != 0) {
-                qr = "UPDATE `pointofsale`.`category` SET `name` = '" + txtCategoryName.getText() + "', `parent_id` = '" + parent_category_id + "' WHERE `category`.`id` =" + category_id;
+
+            boolean rs = anProductManager.saveOrUpdateCategory(category_id, txtCategoryName.getText(), parent_category_id);
+            if (rs) {
+                JOptionPane.showMessageDialog(null, "Category Saved Success");
+            } else {
+                JOptionPane.showMessageDialog(null, "Category Update Success");
+                this.category_id = 0;
             }
-            dbManager.saveCategory(qr);
             txtCategoryName.setText(null);
-            dbManager.getAllCategoryes(tblCategoryView);
+            tableCategoryLoader(anProductManager.getAllCatagory());
             cbCategoryParent.setSelectedIndex(0);
         } else {
             JOptionPane.showMessageDialog(null, "Enter category Name");
@@ -255,30 +264,33 @@ public class AddCategory extends javax.swing.JFrame implements MouseListener {
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = tblCategoryView.getSelectedRow();
         this.category_id = (int) tblCategoryView.getValueAt(tblCategoryView.getSelectedRow(), 0);
         txtCategoryName.setText((String) tblCategoryView.getValueAt(tblCategoryView.getSelectedRow(), 1));
+        cbCategoryParent.setSelectedItem(tblCategoryView.getValueAt(selectedRow, 2));
+        categoryComboBoxLoader((int) tblCategoryView.getValueAt(selectedRow, 2), anProductManager.getAllCatagory());
+
 
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        if (MainSale.isRowSelected(tblCategoryView)) {
+        if (tblCategoryView.getSelectedRow() > -1) {
+            int categoryId = (int) tblCategoryView.getValueAt(tblCategoryView.getSelectedRow(), 0);
             int ms = JOptionPane.showConfirmDialog(null, "Delete Row ", "Are you Sure Delete " + tblCategoryView.getValueAt(tblCategoryView.getSelectedRow(), 1).toString(), JOptionPane.YES_NO_OPTION);
-            System.out.println(ms);
             if (ms == 0) {
-                String qr = "DELETE FROM `category` WHERE `id` =" + (int) tblCategoryView.getValueAt(tblCategoryView.getSelectedRow(), 0);
-                dbManager.inserOrDelete(qr);
+                anProductManager.deleteCategory(categoryId);
             }
-
         } else {
             JOptionPane.showMessageDialog(null, "Please select Item");
         }
-        dbManager.getAllCategoryes(tblCategoryView);
+        tableCategoryLoader(anProductManager.getAllCatagory());
+        //dbManager.getAllCategoryes(tblCategoryView);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        addProduct.dbManager.getAllCatagory(addProduct.cm);
+        // addProduct.dbManager.getAllCatagory(addProduct.cm);
+        addProduct.catagoryComboBoxLoader(anProductManager.getAllCatagory());
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelActionPerformed
 
@@ -356,6 +368,37 @@ public class AddCategory extends javax.swing.JFrame implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void tableCategoryLoader(HashMap<Integer, Catagory> allCatagory) {
+        DefaultTableModel tblCategory = (DefaultTableModel) tblCategoryView.getModel();
+        tblCategory.setNumRows(0);
+        Set entries = allCatagory.entrySet();
+        Iterator iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mapping = (Map.Entry) iterator.next();
+            Catagory anCatagory = (Catagory) allCatagory.get(Integer.parseInt(mapping.getKey().toString()));
+            tblCategory.addRow(new Object[]{
+                anCatagory.getCategory_id(),
+                anCatagory.getCategory_name(),
+                anCatagory.getParent_id()});
+        }
+
+    }
+
+    private void categoryComboBoxLoader(int parent, HashMap<Integer, Catagory> allCatagory) {
+        cbCategoryParent.removeAllItems();
+        cbCategoryParent.addItem("Select one category");
+        Set entries = allCatagory.entrySet();
+        Iterator iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mapping = (Map.Entry) iterator.next();
+            Catagory anCatagory = (Catagory) allCatagory.get(Integer.parseInt(mapping.getKey().toString()));
+            cbCategoryParent.addItem(anCatagory);
+            if (parent == anCatagory.getCategory_id()) {
+                cbCategoryParent.setSelectedItem(anCatagory.getCategory_name());
+            }
+        }
     }
 
 }

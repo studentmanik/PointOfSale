@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  * @author Md Mamin
  */
 public class ProductManager extends javax.swing.JFrame {
-DBManager dbManager=new DBManager();
+
     /**
      * Creates new form ProductManager
      */
@@ -155,10 +155,10 @@ DBManager dbManager=new DBManager();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-   
-       String ms = JOptionPane.showInputDialog(null, "Enter Brand Name", "Brand Name ", JOptionPane.DEFAULT_OPTION);
-       dbManager.saveBrand(ms);
- 
+
+        String ms = JOptionPane.showInputDialog(null, "Enter Brand Name", "Brand Name ", JOptionPane.DEFAULT_OPTION);
+
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
@@ -208,5 +208,4 @@ DBManager dbManager=new DBManager();
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
-    
 }

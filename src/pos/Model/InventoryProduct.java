@@ -3,24 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pointofsale;
+package pos.Model;
 
 /**
  *
  * @author Md Mamin
  */
-public class Product {
+public class InventoryProduct {
 
     private int productId;
     private String productName;
     private int price;
     private int purchasePrice;
-    private int discount=0;
+    private int discount = 0;
     private int quantity;
     private int saleQuantity;
     private int category_id;
     private int parent_id;
-     private String category_name;
+    private String category_name;
 
     public int getCategory_id() {
         return category_id;
@@ -45,7 +45,7 @@ public class Product {
     public void setCategory_name(String category_name) {
         this.category_name = category_name;
     }
-     
+
     public int getDiscount() {
         return discount;
     }
@@ -61,7 +61,6 @@ public class Product {
     public void setPurchasePrice(int purchasePrice) {
         this.purchasePrice = purchasePrice;
     }
-
 
     public int getSaleQuantity() {
         return saleQuantity;

@@ -3,50 +3,43 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pointofsale;
+package pos.DAL;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import pos.Model.InventoryProduct;
 
 /**
  *
  * @author Md Mamin
  */
-public class DBManager {
+public class DBManager extends DBconn{
 
-    DBconn conn = new DBconn();
+    //DBconn conn = new DBconn();
 
     public boolean saveBrand(String BarndName) {
-        conn.getConnection();
+        getConnection();
         String sa = "INSERT INTO`brand` (`id`, `brand_Name`) VALUES (NULL, '" + BarndName + "')";
-        boolean rs = conn.insertData(sa);
-        conn.closeConnection();
+        boolean rs = insertData(sa);
+        closeConnection();
         return rs;
     }
 
-    public void getAllCatagory(JComboBox cbCategory) {
-        conn.getConnection();
-        ResultSet rs = conn.getResultSet("SELECT * FROM category");
-        cbCategory.removeAllItems();
-        cbCategory.addItem("Select one category");
+    public void getAllCatagory() {
+        getConnection();
+        ResultSet rs = getResultSet("SELECT * FROM category");
+
         try {
             while (rs.next()) {
-                ComboBoxLoader anCatagory = new ComboBoxLoader();
-                anCatagory.setCategory_id(rs.getInt("id"));
-                anCatagory.setCategory_name(rs.getString("name"));
-                anCatagory.setParent_id(rs.getInt("parent_id"));
-                cbCategory.addItem(anCatagory);
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(MainSale.class.getName()).log(Level.SEVERE, null, ex);
+
         }
-        conn.closeConnection();
+       closeConnection();
     }
 
 //    public User getUser(String name, String password) {
@@ -68,14 +61,14 @@ public class DBManager {
 //        conn.closeConnection();
 //        return anUser;
 //    }
-    public Product getProduct(String qr) {
-        conn.getConnection();
-        ResultSet rs = conn.getResultSet(qr);
+    public InventoryProduct getProduct(String qr) {
+        getConnection();
+        ResultSet rs = getResultSet(qr);
 
-        Product anProduct = null;
+        InventoryProduct anProduct = null;
         try {
             while (rs.next()) {
-                anProduct = new Product();
+                anProduct = new InventoryProduct();
                 anProduct.setProductId(rs.getInt("Product_id"));
                 anProduct.setProductName(rs.getString("product_name"));
                 anProduct.setQuantity(rs.getInt("quantity"));
@@ -83,16 +76,16 @@ public class DBManager {
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(MainSale.class.getName()).log(Level.SEVERE, null, ex);
+
         }
-        conn.closeConnection();
+        closeConnection();
         return anProduct;
     }
 
     void saveCategory(String qr) {
-        conn.getConnection();
-        boolean rs = conn.insertData(qr);
-        conn.closeConnection();
+        getConnection();
+        boolean rs = insertData(qr);
+        closeConnection();
         System.out.println(qr);
         if (rs) {
             JOptionPane.showMessageDialog(null, "Saved");
@@ -102,40 +95,37 @@ public class DBManager {
     }
 
     public boolean inserOrDelete(String qr) {
-        conn.getConnection();
-        boolean rs = conn.insertData(qr);
-        conn.closeConnection();
+        getConnection();
+        boolean rs = insertData(qr);
+        closeConnection();
         return rs;
     }
 
-    public void getAllCategoryes(JTable tblCategoryView) {
-        conn.getConnection();
+    public void getAllCategoryes() {
+        getConnection();
 
         String qr = "SELECT * FROM `category`";
-        ResultSet rs = conn.getResultSet(qr);
-
-        DefaultTableModel tblCategory = (DefaultTableModel) tblCategoryView.getModel();
-        tblCategory.setNumRows(0);
+        ResultSet rs = getResultSet(qr);
 
         int i = 0;
         try {
             while (rs.next()) {
-                tblCategory.addRow(new Object[]{
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getInt("parent_id")});
+
+                rs.getInt("id");
+                rs.getString("name");
+                rs.getInt("parent_id");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(MainSale.class.getName()).log(Level.SEVERE, null, ex);
+
         }
-        conn.closeConnection();
+        closeConnection();
 
     }
 
     boolean getUserName(String id, String ps) {
         String qr = "SELECT * FROM `user` WHERE user_name=\"" + id + "\"";
-        conn.getConnection();
-        ResultSet rs = conn.getResultSet(qr);
+        getConnection();
+        ResultSet rs = getResultSet(qr);
         boolean result = false;
         try {
             while (rs.next()) {
@@ -145,9 +135,9 @@ public class DBManager {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(MainSale.class.getName()).log(Level.SEVERE, null, ex);
+
         }
-        conn.closeConnection();
+        closeConnection();
         return result;
     }
 }

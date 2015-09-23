@@ -5,4 +5,21 @@ CREATE VIEW mainproduct AS ( SELECT i.id,i.purchase_price,i.minimum_sale_price,i
 ALTER VIEW mainproduct AS ( SELECT i.id,i.purchase_price,i.minimum_sale_price,i.quantity,p.product_name,p.product_id FROM inventory i RIGHT JOIN product p ON i.product_id=p.product_id )
 ALTER VIEW mainproduct AS ( SELECT i.id,i.purchase_price,i.minimum_sale_price,i.quantity,p.product_name,p.product_id FROM inventory i INNER JOIN product p ON i.product_id=p.product_id )
 CREATE VIEW addproduct AS ( SELECT p.product_id,p.product_name,b.brand_Name,c.name FROM product p INNER JOIN category c ON p.category_id=c.id INNER JOIN brand b ON p.brand_id=b.id)
+CREATE VIEW productview AS ( SELECT p.product_id,p.product_name,b.brand_Name,c.name,c.parent_id,p.brand_id,p.category_id FROM product p INNER JOIN category c ON p.category_id=c.id INNER JOIN brand b ON p.brand_id=b.id)
+CREATE VIEW V AS (
+  SELECT i.country,i.year,p.pop,f.food,i.income FROM
+    INCOME i
+  LEFT JOIN 
+    POP p 
+  ON
+    i.country=p.country
+  LEFT JOIN
+    Food f
+  ON 
+    i.country=f.country
+  WHERE 
+    i.year=p.year
+  AND
+    i.year=f.year
+);
 

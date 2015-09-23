@@ -22,6 +22,10 @@ import javax.swing.JTable;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import pos.BLL.ProductManager;
+import pos.Model.Catagory;
+import pos.Model.Brand;
+import pos.Model.Product;
 
 /**
  *
@@ -34,7 +38,8 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
     MainSale sale;
     static int id = 0;
     private int selectedProduct;
-    public DBManager dbManager = new DBManager();
+    //public DBManager dbManager = new DBManager();
+    ProductManager anProductManager = new ProductManager();
     public JComboBox cm;
 
     /**
@@ -43,10 +48,13 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
     public AddProduct(MainSale sa) {
         this.sale = sa;
         initComponents();
-        dbManager.getAllCatagory(cbCategory);
-        getAllBrand();
+        catagoryComboBoxLoader(anProductManager.getAllCatagory());
+        //  dbManager.getAllCatagory(cbCategory);
+        brandComboBoxLoader(anProductManager.getAllBrand());
+        //     getAllBrand();
         //   products = sale.getAllProduct();
-        getAllProduct();
+        productTableLoader(anProductManager.getAllProduct());
+        // getAllProduct();
         txtProductId.disable();
         tblAllProduct.addMouseListener(this);
         // addProductTableLoader();
@@ -106,6 +114,7 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
 
         setFocusCycleRoot(false);
         setFocusTraversalPolicyProvider(true);
+        setResizable(false);
 
         jPanel3.setBackground(new java.awt.Color(153, 153, 153));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Add Product", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.ABOVE_TOP));
@@ -348,16 +357,14 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 67, Short.MAX_VALUE))
+            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -365,29 +372,22 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-
         Object item1 = cbBrand.getSelectedItem();
         Object item2 = cbCategory.getSelectedItem();
-        System.out.println(cbBrand.getSelectedIndex());
-        System.out.println(cbCategory.getSelectedIndex());
         if (cbBrand.getSelectedIndex() != 0 && cbCategory.getSelectedIndex() != 0) {
-            int value2 = ((ComboBoxLoader) item2).getCategory_id();
-            int value1 = ((Brand) item1).getId();
-            saveProduct(txtProductId.getText(), txtProductName.getText(), value2, value1);
+            int category_id = ((Catagory) item2).getCategory_id();
+            int brandId = ((Brand) item1).getId();
+            anProductManager.saveOrUpdateProduct(txtProductId.getText(), txtProductName.getText(), category_id, brandId);
         }
-
         txtProductName.setText(null);
         txtProductId.setText(null);
-        getAllProduct();
         cbBrand.setSelectedIndex(0);
         cbCategory.setSelectedIndex(0);
-//        txtQuantity.setText(null);
-
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
 
-        sale.productTableLoader();
+        // sale.productTableLoader();
         super.hide();
     }//GEN-LAST:event_btnCloseActionPerformed
 
@@ -399,7 +399,6 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         if (MainSale.isRowSelected(tblAllProduct)) {
-
             editRow();
         } else {
             JOptionPane.showMessageDialog(null, "Please select Item");
@@ -409,120 +408,36 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         if (MainSale.isRowSelected(tblAllProduct)) {
             int ms = JOptionPane.showConfirmDialog(null, "Delete Row ", "Are you Sure Delete " + tblAllProduct.getValueAt(tblAllProduct.getSelectedRow(), 1).toString(), JOptionPane.YES_NO_OPTION);
-            System.out.println(ms);
             if (ms == 0) {
-                DeleteProductRow();
+                anProductManager.deleteProduct(selectedProduct);
+                //DeleteProductRow();
             }
-
         } else {
             JOptionPane.showMessageDialog(null, "Please select Item");
         }
+        productTableLoader(anProductManager.getAllProduct());
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void pmMenuDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pmMenuDeleteActionPerformed
-        DeleteProductRow();
+        int ms = JOptionPane.showConfirmDialog(null, "Delete Row ", "Are you Sure Delete " + tblAllProduct.getValueAt(tblAllProduct.getSelectedRow(), 1).toString(), JOptionPane.YES_NO_OPTION);
+        if (ms == 0) {
+            anProductManager.deleteProduct(selectedProduct);
+        }
     }//GEN-LAST:event_pmMenuDeleteActionPerformed
 
     private void AddBrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddBrandActionPerformed
         String ms = JOptionPane.showInputDialog(null, "Enter Brand Name", "Brand Name ", JOptionPane.DEFAULT_OPTION);
-        if (dbManager.saveBrand(ms)) {
-            getAllBrand();
+        if (anProductManager.saveBrand(ms)) {
+            brandComboBoxLoader(anProductManager.getAllBrand());
         }
-  
-        
     }//GEN-LAST:event_AddBrandActionPerformed
 
     private void btnAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCategoryActionPerformed
         AddCategory ad = new AddCategory(this);
         //ad.addProduct = this;
         ad.setVisible(true);
-
     }//GEN-LAST:event_btnAddCategoryActionPerformed
-//    public void addProductTableLoader() {
-//
-//        DefaultTableModel addProductTableModel = (DefaultTableModel) tblAllProduct.getModel();
-//        addProductTableModel.setNumRows(0);
-//        Set entries = products.entrySet();
-//        Iterator iterator = entries.iterator();
-//        while (iterator.hasNext()) {
-//            Map.Entry mapping = (Map.Entry) iterator.next();
-//            Product anProduct = (Product) products.get(Integer.parseInt(mapping.getKey().toString()));
-//            addProductTableModel.addRow(new Object[]{
-//                anProduct.getProductId(),
-//                anProduct.getProductName(),
-//                anProduct.getPrice(),
-//                anProduct.getQuantity(),});
-//        }
-//
-//    }
 
-    public void getAllProduct() {
-
-        DefaultTableModel addProductTableModel = (DefaultTableModel) tblAllProduct.getModel();
-        addProductTableModel.setNumRows(0);
-        DBconn conn = new DBconn();
-        conn.getConnection();
-        ResultSet rs = conn.getResultSet("SELECT * FROM addproduct");
-        int i = 0;
-        try {
-            while (rs.next()) {
-                addProductTableModel.addRow(new Object[]{
-                    rs.getInt("product_id"),
-                    rs.getString("product_name"),
-                    rs.getString("name"),
-                    rs.getString("brand_name")});
-
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(MainSale.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        conn.closeConnection();
-
-    }
-
-    public void getAllBrand() {
-
-        DBconn conn = new DBconn();
-        conn.getConnection();
-        ResultSet rs = conn.getResultSet("SELECT * FROM brand");
-        cbBrand.removeAllItems();
-        cbBrand.addItem("Select One Brand");
-        try {
-            while (rs.next()) {
-
-                Brand anBrand = new Brand();
-                anBrand.setId(rs.getInt("id"));
-                anBrand.setName(rs.getString("brand_Name"));
-
-                cbBrand.addItem(anBrand);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(MainSale.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        conn.closeConnection();
-    }
-
-    private void saveProduct(String id, String Name, int category, int brand) {
-        DBconn conn = new DBconn();
-        conn.getConnection();
-        String qr = "INSERT INTO `product` (`product_id`, `product_name`, `category_id`, `brand_id`) VALUES (NULL, '" + Name + "', '" + category + "', '" + brand + "')";
-        if (MainSale.isNumeric(id)) {
-            qr = "UPDATE `product` SET `product_name`='" + Name + "',`category_id` = '" + category + "', `brand_id` = '" + brand + "' WHERE `product_id` =" + id;
-            
-        }
-        
-        boolean rs = conn.insertData(qr);
-
-        conn.closeConnection();
-     
-        if (rs) {
-
-            JOptionPane.showMessageDialog(null, "Saved");
-        } else {
-            JOptionPane.showMessageDialog(null, "Save Fail");
-        }
-
-    }
     /**
      * @param args the command line arguments
      */
@@ -620,21 +535,41 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
         this.selectedProduct = (int) tblAllProduct.getValueAt(selectedRow, 0);
     }
 
-    private void deleteRow(String query) {
-        DBconn conn = new DBconn();
-        conn.getConnection();
-        boolean rs = conn.insertData(query);
-        conn.closeConnection();
-        System.out.println(query);
-        if (rs != true) {
-            JOptionPane.showMessageDialog(null, "Delete Fail");
+    public void catagoryComboBoxLoader(HashMap<Integer, Catagory> allCatagory) {
+        cbCategory.removeAllItems();
+        cbCategory.addItem("Select One Category");
+        Set entries = allCatagory.entrySet();
+        Iterator iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mapping = (Map.Entry) iterator.next();
+            Catagory anCatagory = (Catagory) allCatagory.get(Integer.parseInt(mapping.getKey().toString()));
+            cbCategory.addItem(anCatagory.getCategory_name());
         }
     }
 
-    private void DeleteProductRow() {
-        String query = "DELETE FROM `product` WHERE `product_id` = " + selectedProduct;
-        deleteRow(query);
-        getAllProduct();
+    private void brandComboBoxLoader(HashMap<Integer, Brand> allBrand) {
+        cbBrand.removeAllItems();
+        cbBrand.addItem("Select One Brand");
+        Set entries = allBrand.entrySet();
+        Iterator iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mapping = (Map.Entry) iterator.next();
+            Brand anBrand = (Brand) allBrand.get(Integer.parseInt(mapping.getKey().toString()));
+            cbBrand.addItem(anBrand.getName());
+        }
+    }
+
+    private void productTableLoader(HashMap<Integer, Product> allProduct) {
+        DefaultTableModel addProductTableModel = (DefaultTableModel) tblAllProduct.getModel();
+        addProductTableModel.setNumRows(0);
+
+        Set entries = allProduct.entrySet();
+        Iterator iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mapping = (Map.Entry) iterator.next();
+            Product anProduct = (Product) allProduct.get(Integer.parseInt(mapping.getKey().toString()));
+            addProductTableModel.addRow(new Object[]{anProduct.getProductId(), anProduct.getProductName(), anProduct.getCategoryName(), anProduct.getBrandName()});
+        }
     }
 
 }

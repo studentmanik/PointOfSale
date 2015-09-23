@@ -5,24 +5,26 @@
  */
 package pointofsale;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
-
+import pos.BLL.UserManager;
 
 /**
  *
  * @author Md Mamin
  */
-public class ShopLogin extends javax.swing.JFrame {
+public class ShopLogin extends javax.swing.JFrame implements KeyListener {
 
-    
-DBManager bdmanager=new DBManager();
+    UserManager userManager = new UserManager();
+
     /**
      * Creates new form ShopLogin
      */
     public ShopLogin() {
         initComponents();
-    
+        pfPassword.addKeyListener(this);
 
     }
 
@@ -136,16 +138,7 @@ DBManager bdmanager=new DBManager();
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-         String id = txtLoginId.getText();
-        String ps = pfPassword.getText();
-        if (bdmanager.getUserName(id,ps )) {
-            MainSale ms = new MainSale();
-            ms.setVisible(true);
-          //  ms.setExtendedState(ms.MAXIMIZED_BOTH);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(null, "Login Id or Password Wrong");
-        }
+        loginParforme();
 
 
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -180,7 +173,11 @@ DBManager bdmanager=new DBManager();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ShopLogin().setVisible(true);
+
+                ShopLogin anLogin = new ShopLogin();
+                anLogin.setDefaultLookAndFeelDecorated(true);
+                anLogin.setVisible(true);
+
             }
         });
     }
@@ -195,5 +192,36 @@ DBManager bdmanager=new DBManager();
     private javax.swing.JTextField txtLoginId;
     // End of variables declaration//GEN-END:variables
 
-    
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            System.out.println();
+            loginParforme();
+        }
+
+    }
+
+    private void loginParforme() {
+        String id = txtLoginId.getText();
+        String ps = pfPassword.getText();
+        if (userManager.getUserByName(id, ps)) {
+            MainSale ms = new MainSale();
+            ms.setVisible(true);
+            //  ms.setExtendedState(ms.MAXIMIZED_BOTH);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Login Id or Password Wrong");
+        }
+    }
+
 }
