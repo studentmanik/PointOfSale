@@ -30,7 +30,7 @@ import pos.Model.*;
  *
  * @author Administrator
  */
-public class MainSale extends javax.swing.JFrame implements KeyListener {
+public class MainSaleUI extends javax.swing.JFrame implements KeyListener {
 
     public int grandTotal;
     public int discount = 0;
@@ -43,7 +43,7 @@ public class MainSale extends javax.swing.JFrame implements KeyListener {
     /**
      * Creates new form MainSale
      */
-    public MainSale() {
+    public MainSaleUI() {
         initComponents();
 
         ProductTableLoader(InventoryManager.getAllProduct());
@@ -586,7 +586,7 @@ public class MainSale extends javax.swing.JFrame implements KeyListener {
     private void mnManageProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnManageProductActionPerformed
         // TODO add your handling code here:
 
-        ProductManager pm = new ProductManager();
+        ProductInventoryUI pm = new ProductInventoryUI();
         pm.setVisible(true);
 
 
@@ -595,21 +595,21 @@ public class MainSale extends javax.swing.JFrame implements KeyListener {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
 
-        AddProduct an = new AddProduct(this);
+        AddProductUI an = new AddProductUI(this);
         an.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         // TODO add your handling code here:
 
-        new ShopLogin().setVisible(true);
+        new ShopLoginUI().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void mnManageCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnManageCustomerActionPerformed
         // TODO add your handling code here:
 
-        CustomerManager cm = new CustomerManager();
+        CustomerManagerUI cm = new CustomerManagerUI();
         cm.setVisible(true);
 
 
@@ -618,7 +618,7 @@ public class MainSale extends javax.swing.JFrame implements KeyListener {
     private void mnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnReportActionPerformed
         // TODO add your handling code here:
 
-        ReportManager rm = new ReportManager();
+        ReportManagerUI rm = new ReportManagerUI();
         rm.setVisible(true);
 
 
@@ -711,40 +711,40 @@ public class MainSale extends javax.swing.JFrame implements KeyListener {
     /**
      * @param args the command line arguments
      */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(MainSale.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(MainSale.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(MainSale.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(MainSale.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                MainSale ms = new MainSale();
-//                ms.setExtendedState(ms.MAXIMIZED_BOTH);
-//
-//                ms.setVisible(true);
-//            }
-//        });
-//    }
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(MainSaleUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(MainSaleUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(MainSaleUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainSaleUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                MainSaleUI ms = new MainSaleUI();
+                ms.setExtendedState(ms.MAXIMIZED_BOTH);
+
+                ms.setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddToCart;

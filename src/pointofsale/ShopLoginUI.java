@@ -15,14 +15,14 @@ import pos.BLL.UserManager;
  *
  * @author Md Mamin
  */
-public class ShopLogin extends javax.swing.JFrame implements KeyListener {
+public class ShopLoginUI extends javax.swing.JFrame implements KeyListener {
 
     UserManager userManager = new UserManager();
 
     /**
      * Creates new form ShopLogin
      */
-    public ShopLogin() {
+    public ShopLoginUI() {
         initComponents();
         pfPassword.addKeyListener(this);
 
@@ -160,21 +160,22 @@ public class ShopLogin extends javax.swing.JFrame implements KeyListener {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ShopLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ShopLoginUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ShopLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ShopLoginUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ShopLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ShopLoginUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ShopLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ShopLoginUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
 
-                ShopLogin anLogin = new ShopLogin();
+                ShopLoginUI anLogin = new ShopLoginUI();
                 anLogin.setDefaultLookAndFeelDecorated(true);
                 anLogin.setVisible(true);
 
@@ -215,7 +216,7 @@ public class ShopLogin extends javax.swing.JFrame implements KeyListener {
         String id = txtLoginId.getText();
         String ps = pfPassword.getText();
         if (userManager.getUserByName(id, ps)) {
-            MainSale ms = new MainSale();
+            MainSaleUI ms = new MainSaleUI();
             ms.setVisible(true);
             //  ms.setExtendedState(ms.MAXIMIZED_BOTH);
             this.dispose();

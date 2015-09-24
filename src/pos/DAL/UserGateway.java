@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import pointofsale.MainSale;
+import pointofsale.MainSaleUI;
 
 /**
  *
@@ -30,7 +30,7 @@ public class UserGateway extends DBconn{
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(MainSale.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainSaleUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         closeConnection();
         return result;

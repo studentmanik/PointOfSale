@@ -31,11 +31,11 @@ import pos.Model.Product;
  *
  * @author Md Mamin
  */
-public class AddProduct extends javax.swing.JFrame implements MouseListener {
+public class AddProductUI extends javax.swing.JFrame implements MouseListener {
 
     // DefaultTableModel addProductTableModel;
     HashMap products;
-    MainSale sale;
+    MainSaleUI sale;
     static int id = 0;
     private int selectedProduct;
     //public DBManager dbManager = new DBManager();
@@ -45,7 +45,7 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
     /**
      * Creates new form AddProduct
      */
-    public AddProduct(MainSale sa) {
+    public AddProductUI(MainSaleUI sa) {
         this.sale = sa;
         initComponents();
         catagoryComboBoxLoader(anProductManager.getAllCatagory());
@@ -339,9 +339,9 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -350,21 +350,23 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 26, Short.MAX_VALUE))
+                .addGap(0, 10, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -398,7 +400,7 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
     }//GEN-LAST:event_pmMenuEditActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        if (MainSale.isRowSelected(tblAllProduct)) {
+        if (MainSaleUI.isRowSelected(tblAllProduct)) {
             editRow();
         } else {
             JOptionPane.showMessageDialog(null, "Please select Item");
@@ -406,7 +408,7 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        if (MainSale.isRowSelected(tblAllProduct)) {
+        if (MainSaleUI.isRowSelected(tblAllProduct)) {
             int ms = JOptionPane.showConfirmDialog(null, "Delete Row ", "Are you Sure Delete " + tblAllProduct.getValueAt(tblAllProduct.getSelectedRow(), 1).toString(), JOptionPane.YES_NO_OPTION);
             if (ms == 0) {
                 anProductManager.deleteProduct(selectedProduct);
@@ -433,7 +435,7 @@ public class AddProduct extends javax.swing.JFrame implements MouseListener {
     }//GEN-LAST:event_AddBrandActionPerformed
 
     private void btnAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCategoryActionPerformed
-        AddCategory ad = new AddCategory(this);
+        AddCategoryUI ad = new AddCategoryUI(this);
         //ad.addProduct = this;
         ad.setVisible(true);
     }//GEN-LAST:event_btnAddCategoryActionPerformed
