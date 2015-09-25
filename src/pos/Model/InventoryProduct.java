@@ -11,39 +11,76 @@ package pos.Model;
  */
 public class InventoryProduct {
 
+    private int inventoryId;
     private int productId;
-    private String productName;
     private int price;
     private int purchasePrice;
-    private int discount = 0;
     private int quantity;
+    private String expDate;
+    private String purchaseDate;
+    private int supplierId;
+
+    private int categoryId;
+    private int parentId;
+    private String categoryName;
+    private String productName;
     private int saleQuantity;
-    private int category_id;
-    private int parent_id;
-    private String category_name;
+    private int discount = 0;
 
-    public int getCategory_id() {
-        return category_id;
+    public int getInventoryId() {
+        return inventoryId;
     }
 
-    public void setCategory_id(int category_id) {
-        this.category_id = category_id;
+    public void setInventoryId(int inventoryId) {
+        this.inventoryId = inventoryId;
     }
 
-    public int getParent_id() {
-        return parent_id;
+    public String getExpDate() {
+        return expDate;
     }
 
-    public void setParent_id(int parent_id) {
-        this.parent_id = parent_id;
+    public void setExpDate(String expDate) {
+        this.expDate = expDate;
     }
 
-    public String getCategory_name() {
-        return category_name;
+    public String getPurchaseDate() {
+        return purchaseDate;
     }
 
-    public void setCategory_name(String category_name) {
-        this.category_name = category_name;
+    public void setPurchaseDate(String purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    public int getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public int getDiscount() {
