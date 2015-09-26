@@ -8,6 +8,7 @@ package pos.BLL;
 import java.util.HashMap;
 import pos.DAL.InventoryGateway;
 import pos.Model.InventoryProduct;
+import pos.Model.Supplier;
 
 /**
  *
@@ -39,4 +40,8 @@ public class InventoryManager {
         }
         return result;
     }
+      public HashMap<Integer, Supplier> getAllSupplier() {
+        return invenoryGaeway.getAllSupplier();
+    }
+    
 }
