@@ -483,7 +483,7 @@ public class MainSaleUI extends javax.swing.JFrame implements KeyListener {
 
         mnManageProduct.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         mnManageProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pointofsale/images/advancedsettings.png"))); // NOI18N
-        mnManageProduct.setText("Manage Product");
+        mnManageProduct.setText("Manage Inventory");
         mnManageProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnManageProductActionPerformed(evt);

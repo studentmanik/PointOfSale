@@ -16,7 +16,11 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pos.BLL.InventoryManager;
+import pos.BLL.ProductManager;
+import pos.Model.Catagory;
 import pos.Model.InventoryProduct;
+import pos.Model.Product;
+import pos.Model.Supplier;
 
 /**
  *
@@ -25,6 +29,7 @@ import pos.Model.InventoryProduct;
 public class ProductInventoryUI extends javax.swing.JFrame {
 
     InventoryManager anInventoryManager = new InventoryManager();
+    ProductManager anProductManager = new ProductManager();
 
     /**
      * Creates new form ProductManager
@@ -32,6 +37,8 @@ public class ProductInventoryUI extends javax.swing.JFrame {
     public ProductInventoryUI() {
         initComponents();
         tblInventoryLoader(anInventoryManager.getAllProduct());
+        productComboBoxLoader(anProductManager.getAllProduct());
+        supplierComboBoxLoader(anInventoryManager.getAllSupplier());
     }
 
     /**
@@ -82,6 +89,8 @@ public class ProductInventoryUI extends javax.swing.JFrame {
             }
         ));
         jScrollPane1.setViewportView(tblInventory);
+
+        jPanel5.setBackground(new java.awt.Color(153, 153, 153));
 
         jButton3.setText("Delete");
 
@@ -134,6 +143,11 @@ public class ProductInventoryUI extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(153, 153, 153));
 
         btnAddProduct.setText("Add Product");
+        btnAddProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddProductActionPerformed(evt);
+            }
+        });
 
         btnUpdateInvenProduct.setText("Update");
 
@@ -146,7 +160,7 @@ public class ProductInventoryUI extends javax.swing.JFrame {
                 .addComponent(btnAddProduct)
                 .addGap(30, 30, 30)
                 .addComponent(btnUpdateInvenProduct)
-                .addContainerGap(149, Short.MAX_VALUE))
+                .addContainerGap(152, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,6 +205,11 @@ public class ProductInventoryUI extends javax.swing.JFrame {
         jLabel7.setText("Supplier");
 
         btnAddSupplier.setText("Add Supplier");
+        btnAddSupplier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddSupplierActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -288,6 +307,15 @@ public class ProductInventoryUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbProductActionPerformed
 
+    private void btnAddSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddSupplierActionPerformed
+        // TODO add your handling code here:
+        new AddSupplierUI().setVisible(true);
+    }//GEN-LAST:event_btnAddSupplierActionPerformed
+
+    private void btnAddProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProductActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddProductActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -337,8 +365,6 @@ public class ProductInventoryUI extends javax.swing.JFrame {
     private javax.swing.JComboBox cbProduct;
     private javax.swing.JComboBox cbSupplier;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -350,7 +376,6 @@ public class ProductInventoryUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblInventory;
@@ -374,4 +399,28 @@ public class ProductInventoryUI extends javax.swing.JFrame {
         }
     }
 
+    private void productComboBoxLoader(HashMap<Integer, Product> allProduct) {
+        cbProduct.removeAllItems();
+        cbProduct.addItem("Select One Product");
+        Set entries = allProduct.entrySet();
+        Iterator iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mapping = (Map.Entry) iterator.next();
+            Product anProduct = (Product) allProduct.get(Integer.parseInt(mapping.getKey().toString()));
+            cbProduct.addItem(anProduct);
+        }
+
+    }
+
+    private void supplierComboBoxLoader(HashMap<Integer, Supplier> allSupplier) {
+        cbSupplier.removeAllItems();
+        cbSupplier.addItem("Select One Product");
+        Set entries = allSupplier.entrySet();
+        Iterator iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mapping = (Map.Entry) iterator.next();
+            Supplier anSupplier = (Supplier) allSupplier.get(Integer.parseInt(mapping.getKey().toString()));
+            cbSupplier.addItem(anSupplier);
+        }
+    }
 }

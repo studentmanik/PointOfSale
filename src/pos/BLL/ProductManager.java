@@ -47,7 +47,7 @@ public class ProductManager {
 
     public boolean saveOrUpdateCategory(int id, String categoryName, int parentId) {
         boolean result = false;
-        if (id!=0) {
+        if (id != 0) {
             anProductGateway.updateCategory(id, categoryName, parentId);
         } else {
             result = anProductGateway.saveCategory(categoryName, parentId);

@@ -374,17 +374,18 @@ public class AddProductUI extends javax.swing.JFrame implements MouseListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        Object item1 = cbBrand.getSelectedItem();
-        Object item2 = cbCategory.getSelectedItem();
+        Object brand = cbBrand.getSelectedItem();
+        Object category = cbCategory.getSelectedItem();
         if (cbBrand.getSelectedIndex() != 0 && cbCategory.getSelectedIndex() != 0) {
-            int category_id = ((Catagory) item2).getCategory_id();
-            int brandId = ((Brand) item1).getId();
+            int category_id = ((Catagory)category).getCategory_id();
+            int brandId = ((Brand)brand).getId();
             anProductManager.saveOrUpdateProduct(txtProductId.getText(), txtProductName.getText(), category_id, brandId);
         }
         txtProductName.setText(null);
         txtProductId.setText(null);
         cbBrand.setSelectedIndex(0);
         cbCategory.setSelectedIndex(0);
+        productTableLoader(anProductManager.getAllProduct());
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
@@ -545,7 +546,7 @@ public class AddProductUI extends javax.swing.JFrame implements MouseListener {
         while (iterator.hasNext()) {
             Map.Entry mapping = (Map.Entry) iterator.next();
             Catagory anCatagory = (Catagory) allCatagory.get(Integer.parseInt(mapping.getKey().toString()));
-            cbCategory.addItem(anCatagory.getCategory_name());
+            cbCategory.addItem(anCatagory);
         }
     }
 
@@ -557,7 +558,7 @@ public class AddProductUI extends javax.swing.JFrame implements MouseListener {
         while (iterator.hasNext()) {
             Map.Entry mapping = (Map.Entry) iterator.next();
             Brand anBrand = (Brand) allBrand.get(Integer.parseInt(mapping.getKey().toString()));
-            cbBrand.addItem(anBrand.getName());
+            cbBrand.addItem(anBrand);
         }
     }
 
